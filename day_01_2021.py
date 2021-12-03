@@ -29,8 +29,8 @@ def sliding_window(lst):
 
 def main():
     os.chdir(Path(__file__).parent)
-    with open('day_1_input.txt', 'r') as infile:
-        puzzle_input = [int(i) for i in infile.readlines()]
+    with open('day_01_input.txt', 'r') as f:
+        puzzle_input = [int(i) for i in f.readlines()]
 
     part_1 = sonar_sweep(puzzle_input)
     print(part_1)
