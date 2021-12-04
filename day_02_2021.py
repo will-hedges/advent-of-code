@@ -6,10 +6,10 @@ from pathlib import Path
 
 class Submarine():
     def __init__(self):
-        self.x, self.y = 0, 0
+        self.x, self.y, self.a = 0, 0, 0
         return
     
-    def move(self, cmd):
+    def part_one_move(self, cmd):
         direction, value = cmd
         if direction == 'forward':
             self.x += value
@@ -17,6 +17,17 @@ class Submarine():
             self.y -= value
         elif direction == 'down':
             self.y += value
+        return
+    
+    def part_two_move(self, cmd):
+        direction, value = cmd
+        if direction == 'forward':
+            self.x += value
+            self.y += self.a * value
+        elif direction == 'up':
+            self.a -= value
+        elif direction == 'down':
+            self.a += value
         return
 
 
@@ -28,11 +39,19 @@ def main():
         for line in f.readlines():
             direction, value = line.split()
             cmds.append((direction, int(value)))
+    
     submarine = Submarine()
     for cmd in cmds:
-        submarine.move(cmd)
-    ans = submarine.x * submarine.y
-    print(ans)
+        submarine.part_one_move(cmd)
+    part_one_ans = submarine.x * submarine.y
+    print(part_one_ans)
+
+    submarine = Submarine()
+    for cmd in cmds:
+        submarine.part_two_move(cmd)
+    part_two_ans = submarine.x * submarine.y
+    print(part_two_ans)
+    return
 
 
 if __name__ == "__main__":
