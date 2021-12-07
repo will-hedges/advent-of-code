@@ -6,28 +6,20 @@ from pathlib import Path
 
 class Submarine():
     def __init__(self):
-        self.x, self.y, self.a = 0, 0, 0
+        self.horizontal_position, self.depth, self.depth_by_aim, self.aim = 0, 0, 0, 0
         return
     
-    def part_one_move(self, cmd):
+    def move(self, cmd):
         direction, value = cmd
         if direction == 'forward':
-            self.x += value
+            self.horizontal_position += value
+            self.depth_by_aim += self.aim * value
         elif direction == 'up':
-            self.y -= value
+            self.depth -= value
+            self.aim -= value
         elif direction == 'down':
-            self.y += value
-        return
-    
-    def part_two_move(self, cmd):
-        direction, value = cmd
-        if direction == 'forward':
-            self.x += value
-            self.y += self.a * value
-        elif direction == 'up':
-            self.a -= value
-        elif direction == 'down':
-            self.a += value
+            self.depth += value
+            self.aim += value
         return
 
 
@@ -42,15 +34,14 @@ def main():
     
     submarine = Submarine()
     for cmd in cmds:
-        submarine.part_one_move(cmd)
-    part_one_ans = submarine.x * submarine.y
-    print(part_one_ans)
+        submarine.move(cmd)
+        
+    part_one = submarine.horizontal_position * submarine.depth
+    print(part_one)
 
-    submarine = Submarine()
-    for cmd in cmds:
-        submarine.part_two_move(cmd)
-    part_two_ans = submarine.x * submarine.y
-    print(part_two_ans)
+    part_two = submarine.horizontal_position * submarine.depth_by_aim
+    print(part_two)
+
     return
 
 
