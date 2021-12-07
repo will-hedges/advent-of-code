@@ -24,12 +24,12 @@ def sliding_window(lst):
             windows.append(sum(window))
         else:
             break
-    return(sonar_sweep(windows))
+    return sonar_sweep(windows)
 
 
 def main():
     os.chdir(Path(__file__).parent)
-    with open('day_01_input.txt', 'r') as f:
+    with open("day_01_input.txt", "r") as f:
         puzzle_input = [int(i) for i in f.readlines()]
 
     part_1 = sonar_sweep(puzzle_input)
