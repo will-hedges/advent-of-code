@@ -6,7 +6,7 @@ from pathlib import Path
 
 
 def find_points_on_line(list_of_2_points):
-
+    list_of_2_points = sorted(list_of_2_points)
     x1, y1 = list_of_2_points[0]
     x2, y2 = list_of_2_points[1]
 
@@ -17,16 +17,18 @@ def find_points_on_line(list_of_2_points):
         a, b = sorted([x1, x2])
         points = [(x, y1) for x in range(a, b + 1)]
     else:
-        # TODO diagnonal lines for part 2
-        return None
+        slope = int((y2 - y1) / (x2 - x1))
+        xs = [x for x in range(x1, x2 + 1)]
+        ys = [y for y in range(y1, y2 + slope, slope)]
+        points = list(zip(xs, ys))
 
     return sorted(points)
 
 
 def main():
     os.chdir(Path(__file__).parent)
-    with open("test_input.txt", "r") as f:
-        # with open("day_05_2021_input.txt", "r") as f:
+    # with open("test_input.txt", "r") as f:
+    with open("day_05_2021_input.txt", "r") as f:
         puzzle_input = [line.strip() for line in f.readlines()]
 
     lines = [
