@@ -16,7 +16,7 @@ def get_gamma_rate(data):
     return gamma_rate
 
 
-def complement(s):
+def bit_complement(s):
     return ''.join(['1' if x == '0' else '0' for x in list(s)])
 
 
@@ -38,7 +38,7 @@ def main():
         diagnostic_report = [line.strip() for line in f.readlines()]
 
     gamma_rate = get_gamma_rate(diagnostic_report)
-    epsilon_rate = complement(gamma_rate)
+    epsilon_rate = bit_complement(gamma_rate)
     power_consumption = int(gamma_rate, 2) * int(epsilon_rate, 2)
     print(power_consumption)
 
@@ -46,6 +46,8 @@ def main():
     co2_rating = bit_filter(diagnostic_report, '0')
     life_support_rating = int(o2_rating, 2) * int(co2_rating, 2)
     print(life_support_rating)
+
+    return
 
 
 if __name__ == "__main__":
