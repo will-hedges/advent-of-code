@@ -1,7 +1,11 @@
 # day_01_2015.py - https://adventofcode.com/2015/day/1
 
 
-def not_quite_lisp(data):
+import os
+from pathlib import Path
+
+
+def floors(data):
     floor = 0
     data = tuple(data)
     for index, char in enumerate(data):
@@ -14,18 +18,11 @@ def not_quite_lisp(data):
     return floor
 
 
-"""
-def not_quite_lisp(data):
-    a = data.count("(")
-    b = data.count(")")
-    print(a - b)
-"""
-
-
 def main():
-    with open("D:/Documents/python_projects/advent of code/2015/day_01_2015_input.txt", "r") as infile:
+    os.chdir(Path(__file__).parent)
+    with open("day_01_2015_input.txt", "r") as infile:
         data = infile.read()
-    print(not_quite_lisp(data))
+    print(floors(data))
 
 
 if __name__ == "__main__":
