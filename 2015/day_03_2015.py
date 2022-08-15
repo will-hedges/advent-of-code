@@ -1,7 +1,6 @@
 # day_03_2015.py - https://adventofcode.com/2015/day/3
 
 
-from collections import defaultdict
 import os
 from pathlib import Path
 
@@ -28,12 +27,23 @@ def main():
     with open("day_03_2015_input.txt", "r") as infile:
         data = tuple(infile.read())
 
+    # part one
     sleigh = Sleigh()
     for direction in data:
         sleigh.move(direction)
-    # part one
     print(len(set(sleigh.coords)))
+    
     # part two
+    santa = Sleigh()
+    robo = Sleigh()
+    for index, direction in enumerate(data):
+        if index % 2 == 0:
+            santa.move(direction)
+        else:
+            robo.move(direction)
+
+    all_coords = santa.coords + robo.coords
+    print(len(set(all_coords)))
 
 
 if __name__ == "__main__":
