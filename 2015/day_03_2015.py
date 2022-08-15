@@ -25,7 +25,7 @@ class Sleigh:
 def main():
     os.chdir(Path(__file__).parent)
     with open("day_03_2015_input.txt", "r") as infile:
-        data = tuple(infile.read())
+        data = infile.read()
 
     # part one
     sleigh = Sleigh()
