@@ -5,29 +5,21 @@ import os
 from pathlib import Path
 
 
-def bool_double_letter(s):
-    for char1, char2 in zip(s[::2], s[1::2]):
-        if char1 == char2:
-            return True
-    return False
-
-
 def count_nice_strings(data):
     nice = 0
     for s in data:
-        three_vowels = sum(s.count(vowel) for vowel in "aeiou")
-        double_letter = bool_double_letter(s)
-        no_bad_combos = not any(
-            [
-                "ab" in s,
-                "cd" in s,
-                "pq" in s,
-                "xy" in s
-
-            ]
-        )
-        if all([three_vowels, double_letter, no_bad_combos]):
-            nice += 1
+        vowels = [s.count(vowel) for vowel in "aeiou"]
+        if sum(vowels) >= 3:
+            double_letters = [char * 2 in s for char in "abcdefghijklmnopqrstuvwxyz"]
+            if any(double_letters):
+                bad_combos = [
+                        "ab" in s,
+                        "cd" in s,
+                        "pq" in s,
+                        "xy" in s
+                    ]
+                if not any(bad_combos):
+                    nice += 1
     return nice
 
 
