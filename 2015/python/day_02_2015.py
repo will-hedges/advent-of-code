@@ -30,8 +30,8 @@ def main():
         total_paper += paper
         total_ribbon += ribbon
 
-    print(total_paper)
-    print(total_ribbon)
+    print(total_paper)  # 1588178
+    print(total_ribbon) # 3783758
 
 
 if __name__ == "__main__":
