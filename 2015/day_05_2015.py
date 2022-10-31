@@ -5,12 +5,16 @@ import os
 from pathlib import Path
 
 
-def count_nice_strings(data):
-    nice = 0
+alphabet = "abcdefghijklmnopqrstuvwxyz"
+
+
+def part_one(data):
+    nice_strings = 0
     for s in data:
         vowels = [s.count(vowel) for vowel in "aeiou"]
         if sum(vowels) >= 3:
-            double_letters = [char * 2 in s for char in "abcdefghijklmnopqrstuvwxyz"]
+            global alphabet
+            double_letters = [char * 2 in s for char in alphabet]
             if any(double_letters):
                 bad_combos = [
                         "ab" in s,
@@ -19,25 +23,30 @@ def count_nice_strings(data):
                         "xy" in s
                     ]
                 if not any(bad_combos):
-                    nice += 1
-    return nice
+                    nice_strings += 1
+    return nice_strings
 
+
+def part_two(data):
+    nice_strings = 0
+
+            
 
 def main():
     test_file = (
-        "ugknbfddgicrmopn",
-        "aaa",
-        "jchzalrnumimnmhp",
-        "haegwjzuvuyypxyu",
-        "dvszwmarrgswjxmb",
+        "qjhvhtzxzqqjkmpb",
+        "xxyxx",
+        "uurcxstgmygtbstg",
+        "ieodomkazucvgmuy",
     )
     os.chdir(Path(__file__).parent)
     with open("day_05_2015_input.txt", "r") as infile:
-        data = [line.strip() for line in infile.readlines()]
-        # data = test_file
+        # data = [line.strip() for line in infile.readlines()]
+        data = test_file
 
-    print(count_nice_strings(data))
-    # 210 too low
+    print(part_one(data))
+    
+    print(part_two(data))
 
 if __name__ == "__main__":
     main()
