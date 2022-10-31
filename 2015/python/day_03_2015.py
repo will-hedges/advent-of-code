@@ -31,8 +31,8 @@ def main():
     sleigh = Sleigh()
     for direction in data:
         sleigh.move(direction)
-    print(len(set(sleigh.coords)))
-    
+    print(len(set(sleigh.coords))) # 2081
+
     # part two
     santa = Sleigh()
     robo = Sleigh()
@@ -43,7 +43,7 @@ def main():
             robo.move(direction)
 
     all_coords = santa.coords + robo.coords
-    print(len(set(all_coords)))
+    print(len(set(all_coords))) # 2341
 
 
 if __name__ == "__main__":
