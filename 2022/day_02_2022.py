@@ -2,46 +2,65 @@ import os
 from pathlib import Path
 
 
-def letter_to_value(move):
+def get_point_value(move):
+    match move:
+        case "rock":
+            return 1
+        case "paper":
+            return 2
+        case "scissors": 
+            return 3
+
+
+def letter_to_rps(move):
     match move:
         case "A" | "X":
-            return 1
+            return "rock"
         case "B" | "Y":
-            return 2
+            return "paper"
         case "C" | "Z":
-            return 3
+            return "scissors"
+
+
+def score_game(game):
+    their_move, my_move = game
+    
+    match (game):
+        # wins
+        case ("rock", "paper") | ("paper", "scissors") | ("scissors", "rock"):
+            return 6 + get_point_value(my_move)
+        # losses
+        case ("rock", "scissors") | ("paper", "rock") | ("scissors", "paper"):
+            return 0 + get_point_value(my_move)
+        # draws
+        case _:
+            return 3 + get_point_value(my_move)
+
+
+def part_one():
+    with open("day_02_2022.txt", "r") as infile:
+        guide = [
+            tuple(map(letter_to_rps, pair.strip().split(" ")))
+            for pair in infile.readlines()
+        ]
+    
+    outcomes = set(guide)
+    game_breakdowns = {}
+    for outcome in outcomes:
+        game_breakdowns[outcome] = guide.count(outcome)
+
+    score = 0
+    for outcome, num_of_games in game_breakdowns.items():
+        their_move, my_move = outcome
+        score += score_game(outcome) * num_of_games 
+
+    return score  
 
 
 def main():
     os.chdir(Path(__file__).parent)
-    with open("day_02_2022.txt", "r") as infile:
-        guide = [
-            tuple(map(letter_to_value, pair.strip().split(" ")))
-            for pair in infile.readlines()
-        ]
 
-    ### PART ONE ###
-    poss = set(guide)
-    outcomes = {}
-    for p in poss:
-        outcomes[p] = guide.count(p)
-
-    score = 0
-    for o in outcomes:
-        opp, me = o
-        match (opp, me):
-            # wins
-            case (3, 1) | (1, 2) | (2, 3):
-                score += 6 * outcomes[o]
-                score += me * outcomes[o]
-            # losses
-            case (1, 3) | (2, 1) | (3, 2):
-                score += me * outcomes[o]
-            # ties
-            case _:
-                score += 3 * outcomes[o]
-                score += me * outcomes[o]
-    print(score)  # 14375
+    print(part_one()) # 14375
 
 
 if __name__ == "__main__":
