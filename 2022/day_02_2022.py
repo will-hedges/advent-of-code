@@ -2,16 +2,6 @@ import os
 from pathlib import Path
 
 
-def get_point_value(move):
-    match move:
-        case "rock":
-            return 1
-        case "paper":
-            return 2
-        case "scissors": 
-            return 3
-
-
 def letter_to_rps(move):
     match move:
         case "A" | "X":
@@ -22,45 +12,96 @@ def letter_to_rps(move):
             return "scissors"
 
 
-def score_game(game):
-    their_move, my_move = game
-    
-    match (game):
-        # wins
-        case ("rock", "paper") | ("paper", "scissors") | ("scissors", "rock"):
-            return 6 + get_point_value(my_move)
-        # losses
-        case ("rock", "scissors") | ("paper", "rock") | ("scissors", "paper"):
-            return 0 + get_point_value(my_move)
-        # draws
-        case _:
-            return 3 + get_point_value(my_move)
+def letter_to_move_or_outcome(letter):
+    match letter:
+        case "A" | "B" | "C":
+            return letter_to_rps(letter)
+        case "X":
+            return "loss"
+        case "Y":
+            return "draw"
+        case "Z":
+            return "win"
 
 
-def part_one():
+def get_corresponding_move(move, outcome):
+    if outcome == "draw":
+        return move
+
+    match move:
+        case "rock":
+            if outcome == "loss":
+                return "scissors"
+            return "paper"
+        case "paper":
+            if outcome == "loss":
+                return "rock"
+            return "scissors"
+        case "scissors":
+            if outcome == "loss":
+                return "paper"
+            return "rock"
+
+
+def read_in_and_translate_guide(converter_fxn):
     with open("day_02_2022.txt", "r") as infile:
         guide = [
-            tuple(map(letter_to_rps, pair.strip().split(" ")))
+            tuple(map(converter_fxn, pair.strip().split(" ")))
             for pair in infile.readlines()
         ]
-    
+
     outcomes = set(guide)
     game_breakdowns = {}
     for outcome in outcomes:
         game_breakdowns[outcome] = guide.count(outcome)
 
-    score = 0
-    for outcome, num_of_games in game_breakdowns.items():
-        their_move, my_move = outcome
-        score += score_game(outcome) * num_of_games 
+    return game_breakdowns
 
-    return score  
+
+def score_game(game):
+    moves = ("rock", "paper", "scissors")
+
+    my_move = game[1]
+
+    match (game):
+        # wins
+        case ("rock", "paper") | ("paper", "scissors") | ("scissors", "rock"):
+            return 6 + moves.index(my_move) + 1
+        # losses
+        case ("rock", "scissors") | ("paper", "rock") | ("scissors", "paper"):
+            return 0 + moves.index(my_move) + 1
+        # draws
+        case _:
+            return 3 + moves.index(my_move) + 1
+
+
+def part_one():
+    games = read_in_and_translate_guide(letter_to_rps)
+
+    score = 0
+    for outcome, num_of_games in games.items():
+        score += score_game(outcome) * num_of_games
+
+    return score
+
+
+def part_two():
+    games = read_in_and_translate_guide(letter_to_move_or_outcome)
+
+    score = 0
+    for game, num_of_games in games.items():
+        opp, outcome = game
+        my_move = get_corresponding_move(opp, outcome)
+        game = (opp, my_move)
+        score += score_game(game) * num_of_games
+
+    return score
 
 
 def main():
     os.chdir(Path(__file__).parent)
-
-    print(part_one()) # 14375
+    print(part_one())  # 14375
+    print(part_two())  # 10274
 
 
 if __name__ == "__main__":
