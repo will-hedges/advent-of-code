@@ -5,7 +5,7 @@
 import re
 
 
-def get_sum_of_mulitplications(memory_lines):
+def get_sum_of_multiplications(memory_lines):
     res = 0
     mul_re = re.compile(r"(mul\(\d*,\d*\))")
 
@@ -20,12 +20,42 @@ def get_sum_of_mulitplications(memory_lines):
     return res
 
 
+def find_all_indices_of_substring(sub, _str):
+    start = 0
+    while True:
+        start = _str.find(sub, start)
+        if start == -1:
+            return
+        yield start
+        start += len(sub)  # use start += 1 to find overlapping matches
+
+
+def handle_do_and_donts(memory_lines):
+    res = 0
+    # what if we index everything that is between do() and don't()?
+    for line in memory_lines:
+        dos = [0] + list(find_all_indices_of_substring("do()", line))
+        donts = list(find_all_indices_of_substring("don't()", line)) + [len(line)]
+        slice_idxs = [(a, b) for a, b in zip(dos, donts)]
+        line_slices = []
+        for tup in slice_idxs:
+            start, stop = tup
+            line_slices.append(line[start:stop])
+        res += get_sum_of_multiplications(line_slices)
+    return res
+
+
 def main():
     with open("mull_it_over_input.txt", "r") as infile:
         data = [line.strip() for line in infile.readlines()]
 
     # part one
-    print(get_sum_of_mulitplications(data))  # 196826776
+    print(get_sum_of_multiplications(data))  # 196826776
+
+    # part two TODO SOLVE
+    # 321615145 too high
+    print(handle_do_and_donts(data))
+
     return
 
 

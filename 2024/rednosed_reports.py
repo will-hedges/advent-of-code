@@ -14,18 +14,20 @@ def get_level_changes(report):
     return changes
 
 
+def check_report_safety(changes):
+    if all([delta <= 0 for delta in changes]) or all([delta >= 0 for delta in changes]):
+        if all([1 <= abs(delta) <= 3 for delta in changes]):
+            return True
+    return False
+
+
 def count_safe_reports(data):
     count = 0
     for report in data:
         changes = get_level_changes(report)
-        # check to see if all changes are negative or positive
-        all_negative = all([x <= 0 for x in changes])
-        all_positive = all([x >= 0 for x in changes])
-        if all_negative or all_positive:
-            # then check to see if they're all between 1 and 3\
-            magnitude_check = all([1 <= abs(x) <= 3 for x in changes])
-            if magnitude_check:
-                count += 1
+        report_is_safe = check_report_safety(changes)
+        if report_is_safe:
+            count += 1
 
     return count
 
@@ -33,12 +35,10 @@ def count_safe_reports(data):
 def count_safe_reports_with_problem_dampener(data):
     count = 0
     for report in data:
-        # really need to get the index of the "bad" level
-        # and then look to see if
         changes = get_level_changes(report)
-        neg = [x <= 0 for x in changes].count(False)
-        pos = [x >= 0 for x in changes].count(False)
-        mag = [1 <= abs(x) <= 3 for x in changes].count(False)
+        neg = [x <= 0 for x in changes]
+        pos = [x >= 0 for x in changes]
+        mag = [1 <= abs(x) <= 3 for x in changes]
         if neg + mag <= 1 or pos + mag <= 1:
             count += 1
 
