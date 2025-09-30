@@ -32,10 +32,9 @@ class Intcode_Computer:
     def find_noun_and_verb_that_output(self, target):
         for noun in range(0, 100):
             for verb in range(0, 100):
-                if noun == 53 and verb == 79:
-                    pass
                 self.run_instructions(noun, verb)
                 if self.intcode_output == target:
                     self.noun = noun
                     self.verb = verb
                     return
+
